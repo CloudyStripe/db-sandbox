@@ -1,11 +1,15 @@
 import { useState } from 'react';
-import './App.css'
+import './App.css';
 
 export const App: React.FC = () => {
   const [userData, setUserData] = useState({
     username: '',
     email: '',
-    password: '',
+    dob: '',
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,8 +20,8 @@ export const App: React.FC = () => {
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault;
-    console.log('User submitted:', userData)
+    e.preventDefault();
+    console.log('User submitted:', userData);
   }
 
   return (
@@ -46,13 +50,57 @@ export const App: React.FC = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password" className="form-label">Password:</label>
+          <label htmlFor="dob" className="form-label">Date of Birth:</label>
           <input
-            type="password"
-            id="password"
-            name="password"
+            type="date"
+            id="dob"
+            name="dob"
             className="form-input"
-            value={userData.password}
+            value={userData.dob}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="street" className="form-label">Street Address:</label>
+          <input
+            type="text"
+            id="street"
+            name="street"
+            className="form-input"
+            value={userData.street}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="city" className="form-label">City:</label>
+          <input
+            type="text"
+            id="city"
+            name="city"
+            className="form-input"
+            value={userData.city}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="state" className="form-label">State:</label>
+          <input
+            type="text"
+            id="state"
+            name="state"
+            className="form-input"
+            value={userData.state}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="zip" className="form-label">Zip Code:</label>
+          <input
+            type="text"
+            id="zip"
+            name="zip"
+            className="form-input"
+            value={userData.zip}
             onChange={handleChange}
           />
         </div>
@@ -62,4 +110,4 @@ export const App: React.FC = () => {
   );
 }
 
-export default App
+export default App;
