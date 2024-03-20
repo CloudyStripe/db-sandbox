@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
+import { UserContext } from './database/userContext';
 
 export const App: React.FC = () => {
   const [userData, setUserData] = useState({
@@ -11,6 +12,14 @@ export const App: React.FC = () => {
     state: '',
     zip: '',
   });
+
+  const [userContext, setUserContext] = useState<UserContext | null>(null);
+
+  useEffect(() => {
+    const db = new UserContext();
+    db.init();
+    setUserContext(db);
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserData({
