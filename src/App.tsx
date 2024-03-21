@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import './App.css';
 import { UserContext } from './database/userContext';
+import { User } from './types/userTypes';
+import './App.css';
 
 export const App: React.FC = () => {
-  const [userData, setUserData] = useState({
+  const [userData, setUserData] = useState<User>({
     username: '',
     email: '',
     dob: '',
@@ -30,7 +31,7 @@ export const App: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('User submitted:', userData);
+    userContext?.addUser(userData);
   }
 
   return (
