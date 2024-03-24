@@ -43,4 +43,18 @@ export class UserDB {
             }
         }
     }
+
+    async getUser(email: string) {
+        if (this._db) {
+            const transaction = this._db.transaction('users', 'readonly');
+            const store = transaction.objectStore('users');
+
+            const request = store.get(email);
+
+            request.onsuccess = (event) => {
+                const user = (event.target as IDBRequest).result;
+                console.log(user)
+            }
+        }
+    }
 }

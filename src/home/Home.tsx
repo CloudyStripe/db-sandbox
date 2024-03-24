@@ -7,6 +7,9 @@ export const Home = () => {
             <button className="form-button">
                 <Link to={'/add'}>Add User</Link>
             </button>
+            <button className="form-button">
+                <Link to={'/retrieve'}>Retrieve User</Link>
+            </button>
         </div>
     )
 }

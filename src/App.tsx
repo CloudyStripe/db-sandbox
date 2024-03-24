@@ -5,7 +5,7 @@ import {
 import { Home } from "./home/Home";
 import { Add } from "./operations/Add";
 import { Edit } from "./operations/Edit";
-import { Display } from "./operations/Display";
+import { Retrieve } from "./operations/Retrieve";
 import { Delete } from "./operations/Delete";
 import { useEffect, useState } from "react";
 import { UserDB } from "./database/userDB";
@@ -35,8 +35,8 @@ export const App = () => {
       element: <Delete />
     },
     {
-      path: "/display",
-      element: <Display/>
+      path: "/retrieve",
+      element: <Retrieve/>
     }
   ]);
 
