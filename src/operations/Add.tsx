@@ -1,10 +1,12 @@
 import { useContext, useState } from 'react';
-import { User } from '../types/userTypes';
+import { AddUserDbRespone, User } from '../types/userTypes';
 import { UserContext } from '../context/userContext';
 
 export const Add: React.FC = () => {
 
   const userContext = useContext(UserContext);
+
+  const [dbOperationResult, setDbOperationResult] = useState<string | null>(null);
 
   const [userData, setUserData] = useState<User>({
     username: '',
@@ -23,9 +25,18 @@ export const Add: React.FC = () => {
     });
   }
 
+  const onSuccessfulAdd = (addUserSucess: AddUserDbRespone) => {
+    setDbOperationResult(`User ${addUserSucess.userName} added successfully.`);
+  }
+
+  const onFailedAdd = (addUserFailed: AddUserDbRespone) => {
+    setDbOperationResult(`Error adding user: ${addUserFailed.message}`);
+  }
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    userContext?.addUser(userData);
+    setDbOperationResult(null);
+    userContext?.addUser(userData, onSuccessfulAdd, onFailedAdd);
   }
 
   return (
@@ -110,6 +121,7 @@ export const Add: React.FC = () => {
         </div>
         <button type="submit" className="form-button">Sign Up</button>
       </div>
+      <div className="operationInformation">{dbOperationResult}</div>
     </form>
   );
 }

@@ -6,4 +6,14 @@ export interface User {
     city: string;
     state: string;
     zip: string;
-  };
+  }
+
+export interface AddUserDbRespone {
+  userName: string;
+  message: string;
+}
+
+export interface RetrieveUserDbResponse {
+  user: User | null;
+  message: string;
+}

@@ -1,4 +1,4 @@
-import { User } from "../types/userTypes";
+import { AddUserDbRespone, RetrieveUserDbResponse, User } from "../types/userTypes";
 
 export class UserDB {
     private _db: IDBDatabase | null;
@@ -30,38 +30,65 @@ export class UserDB {
         }
     }
 
-    async addUser(user: User, successCallback: (user: string) => void, errorCallback: (error: DOMException | string) => void) {
+    async addUser(user: User, successCallback: (addUserSucess: AddUserDbRespone) => void, errorCallback: (addUserError: AddUserDbRespone) => void) {
         if (this._db) {
             const transaction = this._db.transaction('users', 'readwrite');
             const store = transaction.objectStore('users');
-
             const request = store.add(user);
 
             request.onsuccess = (event) => {
                 const addedUser = (event.target as IDBRequest).result;
-                successCallback(addedUser);
+
+                if(addedUser) {
+                    successCallback({
+                        userName: user.username,
+                        message: 'User added successfully.'
+                    });
+                }                
             },
 
             request.onerror = (event) => {
-                errorCallback((event.target as IDBRequest).error || 'Unexpected error adding user.');
+                const error = (event.target as IDBRequest).error?.message;
+
+                errorCallback({
+                    userName: user.username,
+                    message: error || 'Unexpected error retrieving user.'
+                });
             }
         }
     }
 
-    async getUser(email: string, successCallback: (user: User) => void, errorCallback: (error: DOMException | string) => void) {
+    async getUser(email: string, successCallback: (retrieveUserSucess: RetrieveUserDbResponse) => void, errorCallback: (retrieveUserError: RetrieveUserDbResponse) => void) {
         if (this._db) {
             const transaction = this._db.transaction('users', 'readonly');
             const store = transaction.objectStore('users');
-
             const request = store.get(email);
 
             request.onsuccess = (event) => {
                 const retrievedUser = (event.target as IDBRequest).result;
-                successCallback(retrievedUser);
+  
+                if(retrievedUser) {
+                    successCallback({
+                        user: retrievedUser,
+                        message: 'User retrieved successfully.'
+                    });
+                }
+                if(!retrievedUser) {
+                    successCallback({
+                        user: null,
+                        message: 'User not found.'
+                    
+                    })
+                }
             }
 
-            request.onerror = (event) => {
-                errorCallback((event.target as IDBRequest).error || 'Unexpected error retrieving user.');
+            request.onerror = (event) => {           
+                const error = (event.target as IDBRequest).error?.message;
+
+                errorCallback({
+                    user: null,
+                    message: error || 'Unexpected error retrieving user.'
+                });
             }
         }
     }
