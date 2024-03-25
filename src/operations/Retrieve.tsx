@@ -14,7 +14,6 @@ export const Retrieve: React.FC = () => {
   }
 
   const onSuccessfulRetrieve = (retrieveUserSucess: RetrieveUserDbResponse) => {
-
     const user = retrieveUserSucess.user;
 
     if(user){
