@@ -1,19 +1,49 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../context/userContext';
+import { RetrieveUserDbResponse } from '../types/userTypes';
 
 export const Retrieve: React.FC = () => {
 
   const userContext = useContext(UserContext);
 
   const [email, setEmail] = useState('');
+  const [dbOperationResult, setDbOperationResult] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   }
 
+  const onSuccessfulRetrieve = (retrieveUserSucess: RetrieveUserDbResponse) => {
+    const user = retrieveUserSucess.user;
+
+    if(user){
+      setDbOperationResult(
+        `User Information:\n` +
+        `Username: ${user.username}\n` +
+        `Email: ${user.email}\n` +
+        `Date of Birth: ${user.dob}\n` +
+        `Address:\n` +
+        `Street: ${user.street}\n` +
+        `City: ${user.city}\n` +
+        `State: ${user.state}\n` +
+        `Zip: ${user.zip}`
+      );
+    }
+
+    if(!user){
+      setDbOperationResult(retrieveUserSucess.message);
+    }
+  }
+
+  const onFailedRetrieve = (retrieveUserFailure: RetrieveUserDbResponse) => {
+    setDbOperationResult(`Error retrieving user: ${retrieveUserFailure.message}`);
+  }
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
     e.preventDefault();
-    userContext?.getUser(email);
+    setDbOperationResult(null);
+    userContext?.getUser(email, onSuccessfulRetrieve, onFailedRetrieve);
   }
 
   return (
@@ -32,6 +62,7 @@ export const Retrieve: React.FC = () => {
         </div>
         <button type="submit" className="form-button">Retrieve User</button>
       </div>
+      <div className="operationInformation">{dbOperationResult}</div>
     </form>
   );
 }
