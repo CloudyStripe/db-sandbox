@@ -30,7 +30,7 @@ export class UserDB {
         }
     }
 
-    async addUser(user: User) {
+    async addUser(user: User, successCallback: (user: string) => void, errorCallback: (error: DOMException | string) => void) {
         if (this._db) {
             const transaction = this._db.transaction('users', 'readwrite');
             const store = transaction.objectStore('users');
@@ -39,12 +39,16 @@ export class UserDB {
 
             request.onsuccess = (event) => {
                 const addedUser = (event.target as IDBRequest).result;
-                console.log(addedUser)
+                successCallback(addedUser);
+            },
+
+            request.onerror = (event) => {
+                errorCallback((event.target as IDBRequest).error || 'Unexpected error adding user.');
             }
         }
     }
 
-    async getUser(email: string) {
+    async getUser(email: string, successCallback: (user: User) => void, errorCallback: (error: DOMException | string) => void) {
         if (this._db) {
             const transaction = this._db.transaction('users', 'readonly');
             const store = transaction.objectStore('users');
@@ -52,8 +56,12 @@ export class UserDB {
             const request = store.get(email);
 
             request.onsuccess = (event) => {
-                const user = (event.target as IDBRequest).result;
-                console.log(user)
+                const retrievedUser = (event.target as IDBRequest).result;
+                successCallback(retrievedUser);
+            }
+
+            request.onerror = (event) => {
+                errorCallback((event.target as IDBRequest).error || 'Unexpected error retrieving user.');
             }
         }
     }
