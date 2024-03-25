@@ -15,6 +15,7 @@ import './App.css';
 
 export const App = () => {
 
+  const [isLoading, setIsLoading] = useState(true);
   const [db, setDb] = useState<UserDB | null>(null);
 
   const router = createBrowserRouter([
@@ -46,6 +47,7 @@ export const App = () => {
       const userDB = new UserDB();
       await userDB.init();
       setDb(userDB);
+      setIsLoading(false);
     }
     initializeDB()
   }, [])
@@ -53,7 +55,7 @@ export const App = () => {
   return (
     <div>
       <UserContext.Provider value={db}>
-        <RouterProvider router={router} />
+        {isLoading ? <div>Loading...</div> : <RouterProvider router={router} />}
       </UserContext.Provider>
     </div>
   )

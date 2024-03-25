@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../context/userContext';
-import { RetrieveUserDbResponse, User } from '../types/userTypes';
+import { RetrieveUserDbResponse } from '../types/userTypes';
 
 export const Retrieve: React.FC = () => {
 
