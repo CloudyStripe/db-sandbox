@@ -8,7 +8,7 @@ export interface User {
     zip: string;
   }
 
-export interface AddUserDbRespone {
+export interface AddDeleteUserDbResponse {
   userName: string;
   message: string;
 }

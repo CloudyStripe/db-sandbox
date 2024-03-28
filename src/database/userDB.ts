@@ -1,4 +1,4 @@
-import { AddUserDbRespone, RetrieveUserDbResponse, User } from "../types/userTypes";
+import { AddDeleteUserDbResponse, RetrieveUserDbResponse, User } from "../types/userTypes";
 
 export class UserDB {
     private _db: IDBDatabase | null;
@@ -30,7 +30,7 @@ export class UserDB {
         }
     }
 
-    async addUser(user: User, successCallback: (addUserSucess: AddUserDbRespone) => void, errorCallback: (addUserError: AddUserDbRespone) => void) {
+    async addUser(user: User, successCallback: (addUserSucess: AddDeleteUserDbResponse) => void, errorCallback: (addUserError: AddDeleteUserDbResponse) => void) {
         if (this._db) {
             const transaction = this._db.transaction('users', 'readwrite');
             const store = transaction.objectStore('users');
@@ -39,12 +39,12 @@ export class UserDB {
             request.onsuccess = (event) => {
                 const addedUser = (event.target as IDBRequest).result;
 
-                if(addedUser) {
+                if (addedUser) {
                     successCallback({
                         userName: user.username,
                         message: 'User added successfully.'
                     });
-                }                
+                }
             },
 
             request.onerror = (event) => {
@@ -66,28 +66,56 @@ export class UserDB {
 
             request.onsuccess = (event) => {
                 const retrievedUser = (event.target as IDBRequest).result;
-  
-                if(retrievedUser) {
+
+                if (retrievedUser) {
                     successCallback({
                         user: retrievedUser,
                         message: 'User retrieved successfully.'
                     });
                 }
-                if(!retrievedUser) {
+                if (!retrievedUser) {
                     successCallback({
                         user: null,
                         message: 'User not found.'
-                    
+
                     })
                 }
             }
 
-            request.onerror = (event) => {           
+            request.onerror = (event) => {
                 const error = (event.target as IDBRequest).error?.message;
 
                 errorCallback({
                     user: null,
                     message: error || 'Unexpected error retrieving user.'
+                });
+            }
+        }
+    }
+
+    async deleteUser(email: string, successCallback: (deleteUserSucess: AddDeleteUserDbResponse) => void, errorCallback: (deleteUserError: AddDeleteUserDbResponse) => void) {
+        if (this._db) {
+            const transaction = this._db.transaction('users', 'readwrite');
+            const store = transaction.objectStore('users');
+            const request = store.delete(email);
+
+            request.onsuccess = (event) => {
+                const deletedUser = (event.target as IDBRequest).result;
+
+                if (deletedUser) {
+                    successCallback({
+                        userName: email,
+                        message: 'User deleted successfully.'
+                    });
+                }
+            }
+
+            request.onerror = (event) => {
+                const error = (event.target as IDBRequest).error?.message;
+
+                errorCallback({
+                    userName: email,
+                    message: error || 'Unexpected error deleting user.'
                 });
             }
         }
