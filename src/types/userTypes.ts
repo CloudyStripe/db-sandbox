@@ -17,3 +17,7 @@ export interface RetrieveUserDbResponse {
   user: User | null;
   message: string;
 }
+export interface RetrieveUsersDbResponse {
+  users: User[] | null;
+  message: string;
+}
