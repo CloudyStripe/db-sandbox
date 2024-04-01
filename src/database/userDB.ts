@@ -1,4 +1,4 @@
-import { AddDeleteUserDbResponse, RetrieveUserDbResponse, User } from "../types/userTypes";
+import { AddDeleteUserDbResponse, RetrieveUserDbResponse, RetrieveUsersDbResponse, User } from "../types/userTypes";
 
 export class UserDB {
     private _db: IDBDatabase | null;
@@ -93,21 +93,54 @@ export class UserDB {
         }
     }
 
+    async getAllUsers(successCallback: (retrieveUserSucess: RetrieveUsersDbResponse) => void, errorCallback: (retrieveUsersError: RetrieveUsersDbResponse) => void) {
+        if (this._db) {
+            const transaction = this._db.transaction('users', 'readonly');
+            const store = transaction.objectStore('users');
+
+            const request = store.getAll();
+
+            request.onsuccess = (event) => {
+                const retrievedUsers = (event.target as IDBRequest).result;
+
+                if (retrievedUsers) {
+                    successCallback({
+                        users: retrievedUsers,
+                        message: 'Users retrieved successfully.'
+                    });
+                }
+                if (!retrievedUsers) {
+                    successCallback({
+                        users: null,
+                        message: 'No users found.'
+                    });
+                }
+            }
+
+            request.onerror = (event) => {
+                const error = (event.target as IDBRequest).error?.message;
+
+                errorCallback({
+                    users: null,
+                    message: error || 'Unexpected error retrieving users.'
+                });
+            }
+        }
+    }
+
     async deleteUser(email: string, successCallback: (deleteUserSucess: AddDeleteUserDbResponse) => void, errorCallback: (deleteUserError: AddDeleteUserDbResponse) => void) {
         if (this._db) {
             const transaction = this._db.transaction('users', 'readwrite');
             const store = transaction.objectStore('users');
             const request = store.delete(email);
 
-            request.onsuccess = (event) => {
-                const deletedUser = (event.target as IDBRequest).result;
+            request.onsuccess = () => {
 
-                if (deletedUser) {
-                    successCallback({
-                        userName: email,
-                        message: 'User deleted successfully.'
-                    });
-                }
+                successCallback({
+                    userName: email,
+                    message: 'User deleted successfully.'
+                });
+                
             }
 
             request.onerror = (event) => {

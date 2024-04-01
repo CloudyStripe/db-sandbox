@@ -10,6 +10,7 @@ import { Delete } from "./operations/Delete";
 import { useEffect, useState } from "react";
 import { UserDB } from "./database/userDB";
 import { UserContext } from "./context/userContext";
+import { RetrieveAll } from "./operations/RetrieveAll";
 import './App.css';
 
 
@@ -38,6 +39,10 @@ export const App = () => {
     {
       path: "/retrieve",
       element: <Retrieve/>
+    },
+    {
+      path: "/retrieveAll",
+      element: <RetrieveAll/>
     }
   ]);
 

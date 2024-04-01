@@ -16,13 +16,7 @@ export const Delete: React.FC = () => {
   const onSuccessfulDelete = (deleteUserSuccess: AddDeleteUserDbResponse) => {
     const user = deleteUserSuccess.userName;
 
-    if(user){
-      setDbOperationResult(`User ${user} deleted successfully.`);
-    }
-
-    if(!user){
-      setDbOperationResult(deleteUserSuccess.message);
-    }
+    setDbOperationResult(`User ${user} deleted successfully.`);
   }
 
   const onFailedDelete = (deleteUserFailure: AddDeleteUserDbResponse) => {
