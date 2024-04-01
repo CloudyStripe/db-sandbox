@@ -1,4 +1,4 @@
-import { IUsersModiciationResponse, IRetrieveUserDbResponse, IRetrieveUsersDbResponse, User } from "../types/userTypes";
+import { IUsersModificationResponse, IRetrieveUserDbResponse, IRetrieveUsersDbResponse, User } from "../types/userTypes";
 
 export class UserDB {
     private _db: IDBDatabase | null;
@@ -31,7 +31,7 @@ export class UserDB {
         }
     }
 
-    async addUser(user: User, successCallback: (addUserSucess: IUsersModiciationResponse) => void, errorCallback: (addUserError: IUsersModiciationResponse) => void) {
+    async addUser(user: User, successCallback: (addUserSucess: IUsersModificationResponse) => void, errorCallback: (addUserError: IUsersModificationResponse) => void) {
         if (this._db) {
             const transaction = this._db.transaction('users', 'readwrite');
             const store = transaction.objectStore('users');
@@ -129,7 +129,7 @@ export class UserDB {
         }
     }
 
-    async deleteUser(email: string, successCallback: (deleteUserSucess: IUsersModiciationResponse) => void, errorCallback: (deleteUserError: IUsersModiciationResponse) => void) {
+    async deleteUser(email: string, successCallback: (deleteUserSucess: IUsersModificationResponse) => void, errorCallback: (deleteUserError: IUsersModificationResponse) => void) {
         if (this._db) {
             const transaction = this._db.transaction('users', 'readwrite');
             const store = transaction.objectStore('users');
@@ -155,7 +155,7 @@ export class UserDB {
         }
     }
 
-    async editUser(user: User, successCallback: (editUserSucess: IUsersModiciationResponse) => void, errorCallback: (editUserError: IUsersModiciationResponse) => void) {
+    async editUser(user: User, successCallback: (editUserSucess: IUsersModificationResponse) => void, errorCallback: (editUserError: IUsersModificationResponse) => void) {
         if (this._db) {
             const transaction = this._db.transaction('users', 'readwrite');
             const store = transaction.objectStore('users');

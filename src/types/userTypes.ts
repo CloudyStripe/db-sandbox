@@ -8,7 +8,7 @@ export interface User {
     zip: string;
   }
 
-export interface  IUsersModiciationResponse {
+export interface  IUsersModificationResponse {
   userName: string;
   message: string;
 }
