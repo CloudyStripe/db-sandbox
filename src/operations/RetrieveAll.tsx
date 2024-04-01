@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../context/userContext';
-import { RetrieveUsersDbResponse, User } from '../types/userTypes';
+import { IRetrieveUsersDbResponse, User } from '../types/userTypes';
 
 export const RetrieveAll: React.FC = () => {
 
@@ -9,7 +9,7 @@ export const RetrieveAll: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [dbOperationError, setDbOperationError] = useState<string | null>(null);
 
-  const onSuccessfulRetrieve = (retrieveUserSuccess: RetrieveUsersDbResponse) => {
+  const onSuccessfulRetrieve = (retrieveUserSuccess: IRetrieveUsersDbResponse) => {
     const users = retrieveUserSuccess.users || [];
     if (users.length > 0) {
       setUsers(users);
@@ -20,7 +20,7 @@ export const RetrieveAll: React.FC = () => {
     }
   }
 
-  const onFailedRetrieve = (retrieveUserFailure: RetrieveUsersDbResponse) => {
+  const onFailedRetrieve = (retrieveUserFailure: IRetrieveUsersDbResponse) => {
     setDbOperationError(`Error retrieving user: ${retrieveUserFailure.message}`);
   }
 

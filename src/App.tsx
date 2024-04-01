@@ -43,6 +43,10 @@ export const App = () => {
     {
       path: "/retrieveAll",
       element: <RetrieveAll/>
+    },
+    {
+      path: "./edit",
+      element: <Edit/>
     }
   ]);
 
