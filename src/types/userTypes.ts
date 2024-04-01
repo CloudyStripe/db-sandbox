@@ -8,16 +8,16 @@ export interface User {
     zip: string;
   }
 
-export interface AddDeleteUserDbResponse {
+export interface  IUsersModiciationResponse {
   userName: string;
   message: string;
 }
 
-export interface RetrieveUserDbResponse {
+export interface IRetrieveUserDbResponse {
   user: User | null;
   message: string;
 }
-export interface RetrieveUsersDbResponse {
+export interface IRetrieveUsersDbResponse {
   users: User[] | null;
   message: string;
 }

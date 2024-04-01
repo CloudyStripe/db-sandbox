@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { AddDeleteUserDbResponse, User } from '../types/userTypes';
+import { IUsersModiciationResponse, User } from '../types/userTypes';
 import { UserContext } from '../context/userContext';
 
 export const Add: React.FC = () => {
@@ -25,11 +25,11 @@ export const Add: React.FC = () => {
     });
   }
 
-  const onSuccessfulAdd = (addUserSucess: AddDeleteUserDbResponse) => {
+  const onSuccessfulAdd = (addUserSucess: IUsersModiciationResponse) => {
     setDbOperationResult(`User ${addUserSucess.userName} added successfully.`);
   }
 
-  const onFailedAdd = (addUserFailed: AddDeleteUserDbResponse) => {
+  const onFailedAdd = (addUserFailed: IUsersModiciationResponse) => {
     setDbOperationResult(`Error adding user: ${addUserFailed.message}`);
   }
 

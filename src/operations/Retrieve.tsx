@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../context/userContext';
-import { RetrieveUserDbResponse } from '../types/userTypes';
+import { IRetrieveUserDbResponse } from '../types/userTypes';
 
 export const Retrieve: React.FC = () => {
 
@@ -13,7 +13,7 @@ export const Retrieve: React.FC = () => {
     setEmail(e.target.value);
   }
 
-  const onSuccessfulRetrieve = (retrieveUserSucess: RetrieveUserDbResponse) => {
+  const onSuccessfulRetrieve = (retrieveUserSucess: IRetrieveUserDbResponse) => {
     const user = retrieveUserSucess.user;
 
     if(user){
@@ -35,7 +35,7 @@ export const Retrieve: React.FC = () => {
     }
   }
 
-  const onFailedRetrieve = (retrieveUserFailure: RetrieveUserDbResponse) => {
+  const onFailedRetrieve = (retrieveUserFailure: IRetrieveUserDbResponse) => {
     setDbOperationResult(`Error retrieving user: ${retrieveUserFailure.message}`);
   }
 

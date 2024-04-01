@@ -1,4 +1,4 @@
-import { AddDeleteUserDbResponse, RetrieveUserDbResponse, RetrieveUsersDbResponse, User } from "../types/userTypes";
+import { IUsersModiciationResponse, IRetrieveUserDbResponse, IRetrieveUsersDbResponse, User } from "../types/userTypes";
 
 export class UserDB {
     private _db: IDBDatabase | null;
@@ -19,6 +19,7 @@ export class UserDB {
 
         connection.onupgradeneeded = (event) => {
             this._db = (event.target as IDBOpenDBRequest).result;
+            //in-line key
             const store = this._db.createObjectStore('users', { keyPath: 'email' });
 
             store.createIndex('username', 'username', { unique: true });
@@ -30,7 +31,7 @@ export class UserDB {
         }
     }
 
-    async addUser(user: User, successCallback: (addUserSucess: AddDeleteUserDbResponse) => void, errorCallback: (addUserError: AddDeleteUserDbResponse) => void) {
+    async addUser(user: User, successCallback: (addUserSucess: IUsersModiciationResponse) => void, errorCallback: (addUserError: IUsersModiciationResponse) => void) {
         if (this._db) {
             const transaction = this._db.transaction('users', 'readwrite');
             const store = transaction.objectStore('users');
@@ -58,7 +59,7 @@ export class UserDB {
         }
     }
 
-    async getUser(email: string, successCallback: (retrieveUserSucess: RetrieveUserDbResponse) => void, errorCallback: (retrieveUserError: RetrieveUserDbResponse) => void) {
+    async getUser(email: string, successCallback: (retrieveUserSucess: IRetrieveUserDbResponse) => void, errorCallback: (retrieveUserError: IRetrieveUserDbResponse) => void) {
         if (this._db) {
             const transaction = this._db.transaction('users', 'readonly');
             const store = transaction.objectStore('users');
@@ -93,7 +94,7 @@ export class UserDB {
         }
     }
 
-    async getAllUsers(successCallback: (retrieveUserSucess: RetrieveUsersDbResponse) => void, errorCallback: (retrieveUsersError: RetrieveUsersDbResponse) => void) {
+    async getAllUsers(successCallback: (retrieveUserSucess: IRetrieveUsersDbResponse) => void, errorCallback: (retrieveUsersError: IRetrieveUsersDbResponse) => void) {
         if (this._db) {
             const transaction = this._db.transaction('users', 'readonly');
             const store = transaction.objectStore('users');
@@ -128,7 +129,7 @@ export class UserDB {
         }
     }
 
-    async deleteUser(email: string, successCallback: (deleteUserSucess: AddDeleteUserDbResponse) => void, errorCallback: (deleteUserError: AddDeleteUserDbResponse) => void) {
+    async deleteUser(email: string, successCallback: (deleteUserSucess: IUsersModiciationResponse) => void, errorCallback: (deleteUserError: IUsersModiciationResponse) => void) {
         if (this._db) {
             const transaction = this._db.transaction('users', 'readwrite');
             const store = transaction.objectStore('users');
@@ -138,7 +139,7 @@ export class UserDB {
 
                 successCallback({
                     userName: email,
-                    message: 'User deleted successfully.'
+                    message:  `User ${email} deleted successfully.`
                 });
                 
             }
@@ -149,6 +150,30 @@ export class UserDB {
                 errorCallback({
                     userName: email,
                     message: error || 'Unexpected error deleting user.'
+                });
+            }
+        }
+    }
+
+    async editUser(user: User, successCallback: (editUserSucess: IUsersModiciationResponse) => void, errorCallback: (editUserError: IUsersModiciationResponse) => void) {
+        if (this._db) {
+            const transaction = this._db.transaction('users', 'readwrite');
+            const store = transaction.objectStore('users');
+            const request = store.put(user);
+
+            request.onsuccess = () => {
+                successCallback({
+                    userName: user.username,
+                    message: `User ${user.username} successfully edited.`
+                });
+            }
+
+            request.onerror = (event) => {
+                const error = (event.target as IDBRequest).error?.message;
+
+                errorCallback({
+                    userName: user.username,
+                    message: error || 'Unexpected error editing user.'
                 });
             }
         }

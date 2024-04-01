@@ -16,6 +16,9 @@ export const Home = () => {
             <button className="form-button">
                 <Link to={'/retrieveAll'}>Retrieve All Users</Link>
             </button>
+            <button className="form-button">
+                <Link to={'/edit'}>Edit User</Link>
+            </button>
         </div>
     )
 }

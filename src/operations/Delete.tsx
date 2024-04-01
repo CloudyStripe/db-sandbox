@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../context/userContext';
-import { AddDeleteUserDbResponse } from '../types/userTypes';
+import { IUsersModiciationResponse } from '../types/userTypes';
 
 export const Delete: React.FC = () => {
 
@@ -13,13 +13,13 @@ export const Delete: React.FC = () => {
     setEmail(e.target.value);
   }
 
-  const onSuccessfulDelete = (deleteUserSuccess: AddDeleteUserDbResponse) => {
+  const onSuccessfulDelete = (deleteUserSuccess: IUsersModiciationResponse) => {
     const user = deleteUserSuccess.userName;
 
     setDbOperationResult(`User ${user} deleted successfully.`);
   }
 
-  const onFailedDelete = (deleteUserFailure: AddDeleteUserDbResponse) => {
+  const onFailedDelete = (deleteUserFailure: IUsersModiciationResponse) => {
     setDbOperationResult(`Error retrieving user: ${deleteUserFailure.message}`);
   }
 
